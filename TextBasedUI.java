@@ -46,7 +46,7 @@ public class TextBasedUI {
         announceWinner();
     }
 
-        private void displayMenu() {  
+    private void displayMenu() {  
         System.out.println("\nChoose an option: \n"
             + "[M] Make a move\n"
             + "[S] Save game\n"
@@ -84,26 +84,30 @@ public class TextBasedUI {
         }
     }
 
-    /**
-     * Handle making a move for the human or computer player
-     */ 
     private void makeMove() {
-        
-        if (game.isHumanTurn()){
-            assignMoveFrom(game.getHumanPlayer()); //human move
-            if(!game.checkWinner())
-                assignMoveFrom(game.getComputerPlayer()); // computer move
+        if (game.isHumanTurn()) {
+            assignMoveFrom(game.getHumanPlayer());
+            if (!game.checkWinner()) {
+                assignMoveFrom(game.getComputerPlayer());
+            }
         } else {
             assignMoveFrom(game.getComputerPlayer());
-            if(!game.checkWinner())
+            if (!game.checkWinner()) {
                 assignMoveFrom(game.getHumanPlayer());
+            }
         }
     }
-        
 
     private void assignMoveFrom(Player player) {
         System.out.println("\nIt is " + player.getName() + "'s turn to play.");
         int move = player.getMove(game.getMarbleSize());
+        
+        // Validate move for both human and computer players
+        while (move < 1 || move > 2) {
+            System.out.println("Invalid move. Must take 1 or 2 marbles.");
+            move = player.getMove(game.getMarbleSize());
+        }
+        
         game.assignMove(move);
         System.out.println(player.getName() + " takes " + move + " marbles.");
         displayMarbles();
@@ -123,12 +127,11 @@ public class TextBasedUI {
     private void announceWinner() {
         String winnerName;
         if (game.isHumanTurn())
-            winnerName = game.getComputerPlayer().getName(); //Computer Wins
+            winnerName = game.getComputerPlayer().getName();
         else
-            winnerName = game.getHumanPlayer().getName(); //Human Wins
+            winnerName = game.getHumanPlayer().getName();
         System.out.println("*** " + winnerName + " is the winner! ***");
     }
-
 
     public static void main(String[] args) {
         TextBasedUI textUi = new TextBasedUI();

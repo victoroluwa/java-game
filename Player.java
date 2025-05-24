@@ -13,6 +13,9 @@ public class Player {
     }
 
     public int getMove(int currentPileSize) {
+        if (strategy == null) {
+            throw new IllegalStateException("No strategy set for player " + name);
+        }
         return strategy.NextMove();
     }
     
@@ -27,5 +30,4 @@ public class Player {
     public void setStrategy(MoveStrategy strategy) {
         this.strategy = strategy;
     }
-    
 }
