@@ -15,13 +15,14 @@ public class NimGameGUI extends JFrame implements GameObserver {
 
     
     public static void main(String[] args) {
-        Player human = new Player("Human", new HumanUserStrategy()); // will override in GUI
-        Player computer = new Player("Computer", new YourStrategy()); // or RandomStrategy
-
+        Player human = new Player("Human Player", new HumanUserStrategy());
+        Player computer = new Player("Computer Playerr", new SmartStrategy());
+        
         NimGame game = new NimGame(human, computer);
         NimGameGUI gui = new NimGameGUI(game);
         gui.setVisible(true);
     }
+
 
     public NimGameGUI(NimGame game) {
         this.game = game;
@@ -41,13 +42,12 @@ public class NimGameGUI extends JFrame implements GameObserver {
         centerPanel.setLayout(new BorderLayout());
         
         centerPanel.add(marblePanel, BorderLayout.NORTH);
-        centerPanel.add(new JScrollPane(log), BorderLayout.CENTER);
-        
         add(centerPanel, BorderLayout.CENTER);
 
         turnLabel = new JLabel();
         log = new JTextArea(5, 20);
         log.setEditable(false);
+        centerPanel.add(new JScrollPane(log), BorderLayout.CENTER);
 
         JPanel statusPanel = new JPanel(new GridLayout(2, 1));
         statusPanel.add(marbleLabel);
@@ -120,7 +120,7 @@ load.addActionListener(e -> {
             }
 
             log.append("Game loaded from: " + file.getName() + "\n");
-            game.forceNotify(); // notify observers manually
+            game.forceNotify(); 
         } catch (IOException | NumberFormatException ex) {
             log.append("Error loading game: " + ex.getMessage() + "\n");
         }
@@ -159,10 +159,16 @@ load.addActionListener(e -> {
     @Override
     public void update() {
         int count = game.getMarbleSize();
-    marblePanel.setMarbleCount(count);
+        marblePanel.setMarbleCount(count);
+        if (!game.isHumanTurn()) {
+        Timer timer = new Timer(1000, e -> game.makeComputerMoveIfNeeded());
+        timer.setRepeats(false);
+        timer.start();
+            }
+
 
     if (game.checkWinner()) {
-        String winner = game.isHumanTurn() ? "Computer" : "Human";
+        String winner = game.isHumanTurn() ? game.getComputerPlayer().getName() : game.getHumanPlayer().getName();
         log.append("Game Over! Winner: " + winner + "\n");
         take1.setEnabled(false);
         take2.setEnabled(false);
@@ -171,20 +177,9 @@ load.addActionListener(e -> {
         take2.setEnabled(true);
     }
         marbleLabel.setText("Marbles left: " + game.getMarbleSize());
-        turnLabel.setText("Turn: " + (game.isHumanTurn() ? "Human" : "Computer"));
+        turnLabel.setText("Turn: " + (game.isHumanTurn() ? game.getHumanPlayer().getName() : game.getComputerPlayer().getName()));
     }
-    
-    public class TestPanel {
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Test Marble Panel");
-        MarblePanel panel = new MarblePanel();
-        panel.setMarbleCount(15);
-        frame.add(panel);
-        frame.setSize(400, 200);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-    }
-}
+
 
 }
     

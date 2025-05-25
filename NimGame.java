@@ -31,12 +31,19 @@ public class NimGame {
     }
 
     public void assignMove(int removeAmount) {
-        // Save current state before move
+        // I will now save current state before move
         marbleHistory.push(marbleSize);
         turnHistory.push(isHumanTurn);
         marbleSize -= removeAmount;
         isHumanTurn = !isHumanTurn;
         notifyObservers();
+    }
+    
+    public void makeComputerMoveIfNeeded() {
+    if (!isHumanTurn) {
+        int move = computerPlayer.makeMove(marbleSize);
+        assignMove(move);
+    }
     }
 
     public boolean checkWinner() {
@@ -48,7 +55,7 @@ public class NimGame {
         writer.write(marbleSize + "\n");
         writer.write(isHumanTurn + "\n");
 
-        // Save undo history
+        // This will save undo history
         writer.write(String.join(",", marbleHistory.stream()
                 .map(String::valueOf).toArray(String[]::new)) + "\n");
         writer.write(String.join(",", turnHistory.stream()
@@ -66,7 +73,7 @@ public class NimGame {
         marbleSize = Integer.parseInt(reader.readLine());
         isHumanTurn = Boolean.parseBoolean(reader.readLine());
 
-        // Restore marble history
+        // Here, I restore marble history
         String[] marbleHistoryValues = reader.readLine().split(",");
         marbleHistory.clear();
         notifyObservers();
@@ -76,7 +83,7 @@ public class NimGame {
                   .forEach(marbleHistory::push);
         }
 
-        // Restore turn history
+        // Under this, I will restore the turn history
         String[] turnHistoryValues = reader.readLine().split(",");
         turnHistory.clear();
         if (!turnHistoryValues[0].isEmpty()) {
@@ -107,7 +114,7 @@ public class NimGame {
     public void resetGame() {
         Random random = new Random();
         this.marbleSize = 10; 
-        this.isHumanTurn = random.nextBoolean(); // randomly choose who starts
+        this.isHumanTurn = random.nextBoolean(); // This will randomly choose who starts
         marbleHistory.clear();
         turnHistory.clear();
         notifyObservers();
