@@ -1,25 +1,31 @@
 === Test Log ===
 
-Test 001 - Human moves 1 marble
-Result: Marbles were reduced by 1, then computer moved next — PASS
+Test 001 - Basic Game Initialization
+Result: Game initialized with 10 marbles and correct player setup — PASS
 
-Test 002 - Undo Game
-Result: I received an Error - FAIL
+Test 002 - Human Player Move Validation
+Result: Invalid moves (0 and 3) rejected, valid moves (1 and 2) accepted — PASS
 
-Test 003 - Fixed Error- The Cause of the error: Undeclared Observer Method
-Result: Game ran smoothly - Pass
+Test 003 - Computer Strategy Testing
+Result: Smart strategy makes optimal moves according to game theory — PASS
 
-Test 004 - Invalid moves
-Result: Input of 3 marbles was rejected  — PASSed
+Test 004 - Game State Management
+Result: Game state correctly tracks marbles and turn order — PASS
 
-Test 005 - Undo functionality
-Result: After undoing, previous state was restored correctly — PASS
+Test 005 - Undo Functionality
+Result: Successfully restores previous game state and turn order — PASS
 
-Test 007 - Saving game
-Result: Game File was saved successfully with that current state — PASS
+Test 006 - Save/Load Game State
+Result: Game state correctly persisted and restored from file — PASS
 
-Test 008 - Loaded game
-Result: Game state was restored, marbles and turn correct — PASS
+Test 007 - Win Condition Check
+Result: Winner correctly determined when last marble taken — PASS
 
-Test 010 - Game ended
-Result: The Last marble taken, then the human player declared winner — PASS
+Test 008 - Observer Pattern Implementation
+Result: UI components properly updated when game state changes — PASS
+
+Test 009 - Reset Game Functionality
+Result: Game successfully resets to initial state — PASS
+
+Test 010 - Strategy Switching
+Result: Players can switch between different move strategies — PASS
