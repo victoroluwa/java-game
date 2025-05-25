@@ -4,8 +4,9 @@ public class RandomStrategy implements MoveStrategy {
     private Random random = new Random();
 
     @Override
-    public int NextMove() {
-        return random.nextInt(2) + 1; // Randomly remove 1 or 2 piles
+    public int nextMove(int marblesLeft) {
+        // Ensure not to remove more than available
+        return marblesLeft == 1 ? 1 : random.nextInt(2) + 1;
     }
    
 }

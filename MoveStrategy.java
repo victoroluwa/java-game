@@ -1,4 +1,4 @@
 public interface MoveStrategy {
-    
-    int NextMove();
+    int nextMove(int marblesLeft);
 }
+
